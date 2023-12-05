@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: black;
+            color: white;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #404040;
+            /* Gray color */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .buttonSub {
+            margin-top: 10px;
+            padding: 8px;
+            font-size: 16px;
+            background-color: #0007ce;
+            /* Blue color for the button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .buttonCan {
+            background-color: #7e0000;
+            color: white;
+
+        }
+
+        .buttonCannot {
+            background-color: #7e0000;
+            color: rgb(134, 134, 134);
+            pointer-events: none;
+        }
+
+        input {
+            margin-top: 10px;
+            padding: 8px;
+            font-size: 16px;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        hr {
+            border: none;
+            height: 5px;
+            /* Adjusted height to match the container */
+            background-color: #808080;
+            border: #404040;
+            border-width: 2px;
+            /* Gray color */
+            margin: 20px 0;
+        }
+
+        .welcome-message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #006400;
+            /* Dark green color */
+            color: white;
+            border-radius: 5px;
+            display: none;
+            /* Initially hidden */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="SUBMIT">
+        <h1>Welcome to Your Website</h1>
+        <p>Please enter your provided code to get started:</p>
+        <input type="text" id="codeInput" placeholder="Enter code">
+        <button onclick="checkCode()" class="buttonSub">Get Started</button>
+    </div>
+    <div id="welcomeMessage" class="container welcome-message">
+        <h3 id="welcomeMessageText"></h3>
+        <div id="ordersContainer"></div>
+        <button onclick="redirectToPage2()" class="buttonSub">Fill Out an order</button>
+    </div>
+    <hr>
+    <div class="container" id="FAQ">
+        <h2>FAQ</h2>
+        <h3>Don't Have a Code?</h3>
+        <p>This website was built for a select few who were provided with a certain code.
+            <br>If you happen to not have a code, and think you should have one, please contact<br>
+            Michael Cragun. He will help you with the selected code?
+        </p>
+        <h3>What is this place?</h3>
+        <p>This website is a way for me to provide Christmas options to those whom might be<br>
+            close to me, or to those who I select and would like to do something for! This was<br>
+            all made by hand, so I hope you like it!</p>
+    </div>
+
+    <script>
+        // Define valid codes and associated names
+        var validCodes = {
+            'stephisbest': 'Mrs. Stephanie Mcneice',
+            'gracexgay': 'Ms. Grace Gay',
+            'hearmeoutlmao': 'Mr. Michael Cragun',
+            'mygoodbro': 'Mr. Marshall Charley'
+        };
+
+        function checkCode() {
+            var enteredCode = document.getElementById('codeInput').value;
+            var welcomeMessage = document.getElementById('welcomeMessage');
+            var welcomeMessageText = document.getElementById('welcomeMessageText');
+
+            if (validCodes.hasOwnProperty(enteredCode)) {
+                // Get the corresponding name
+                var name = validCodes[enteredCode];
+
+                // Display welcome message
+                welcomeMessageText.innerHTML = `Welcome ${name}! Please click the button below to start an order.`;
+                localStorage.setItem('name', enteredCode);
+                welcomeMessage.style.display = 'block';
+
+                googleRetrieve();
+
+            } else {
+                alert('Invalid code. Try again.');
+            }
+        }
+
+        function redirectToPage2() {
+            // You can uncomment the following line to redirect to page 2
+            function generateRandomString() {
+                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                var randomString = '';
+
+                for (var i = 0; i < 5; i++) {
+                    var randomIndex = Math.floor(Math.random() * characters.length);
+                    randomString += characters.charAt(randomIndex);
+                }
+
+                return randomString;
+            }
+
+            var randomString = generateRandomString();
+            localStorage.setItem('OrderKey', randomString);
+            window.location.href = 'page2.html';
+        }
+
+
+        class Order {
+            constructor(orderNumber, name, shape, size, weight, ms, coat, choice, dimension, orderId, timeLogged, status) {
+                this.orderNumber = orderNumber;
+                this.name = name;
+                this.shape = shape;
+                this.size = size;
+                this.weight = weight;
+                this.ms = ms;
+                this.coat = coat;
+                this.choice = choice;
+                this.dimension = dimension;
+                this.orderId = orderId;
+                this.timeLogged = timeLogged;
+                this.status = status;
+            }
+        }
+
+        function displayOrders(orders) {
+            const ordersContainer = document.getElementById('ordersContainer');
+
+            // Clear previous content
+            ordersContainer.innerHTML = '';
+
+            // Display each order in a row
+            orders.forEach((order) => {
+                const orderRow = document.createElement('div');
+                orderRow.classList.add('order-row');
+                orderRow.innerHTML = `
+                        <p>Order #: ${order.orderNumber};
+                        Shape: ${order.shape},
+                        Size: ${order.size},
+                        Weight: ${order.weight},
+                        Status: ${order.status}</p>
+                   <button onclick="clearOrder('${order.orderNumber}')" class="${order.dimension === "Canceled" ? "buttonCannot" : "buttonCan"}">Cancel</button>
+                `;
+                ordersContainer.appendChild(orderRow);
+            });
+        }
+
+        function clearOrder(orderId) {
+
+            var urltoOpen = 'https://script.google.com/macros/s/AKfycbyVmJyW3tMyj1uPyJ_mF0AZrB50YkRqs-kAWb7uESSEI6kug8IkTG8o4Oh6cKY13UKC/exec?id=' + orderId;
+            window.open(urltoOpen, '_blank');
+            setTimeout(function () {
+                googleRetrieve();
+            }, 3000);
+
+        }
+
+
+        function googleRetrieve() {
+            const sheetId = "14ZPkJnJGQ7fNA0IITxWmXnFgz1eqn-rP6voC7ikVSYo";
+            const sheetName = "Orders";
+            const range = "A:L";
+            const apiKey = "AIzaSyByVmS9mRHs3K1d_M0WXtGg6QC_1H5lOo4";
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}!${range}?key=${apiKey}`;
+
+            const targetName = localStorage.getItem('name');; // Replace with the desired name to filter by
+
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => {
+                    const ordersData = data.values.slice(1); // Exclude the header row
+                    const filteredOrders = ordersData
+                        .filter((orderRow) => orderRow[1] === targetName) // Filter by the name
+                        .map((orderRow) => {
+                            return new Order(
+                                orderRow[0],
+                                orderRow[1],
+                                orderRow[2],
+                                orderRow[3],
+                                orderRow[4],
+                                orderRow[5],
+                                orderRow[6],
+                                orderRow[7],
+                                orderRow[8],
+                                orderRow[9],
+                                orderRow[10],
+                                orderRow[11]
+                            );
+                        });
+
+                    // Now 'filteredOrders' array contains instances of the Order class for the specified name
+                    console.log(filteredOrders);
+
+                    // Display the orders in the HTML
+                    displayOrders(filteredOrders);
+                })
+                .catch((error) => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+
+
+    </script>
+</body>
+
+</html>

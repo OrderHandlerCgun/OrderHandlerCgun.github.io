@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Selection</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: black;
+            color: white;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #404040;
+            /* Gray color */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        select,
+        input,
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            /* Increased padding */
+            font-size: 18px;
+            /* Increased font size */
+        }
+
+        input[type="text"] {
+            width: 100%;
+            /* Full-width text input */
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007BFF;
+            /* Blue color for the button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        hr {
+            border: none;
+            height: 20px;
+            /* Adjusted height to match the container */
+            background-color: #404040;
+            /* Gray color */
+            margin: 20px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Order Selection</h1>
+        <p>Fill in the blanks:</p>
+
+        <!-- Section 1 -->
+        <div id="section1">
+            <h2>Please Select a Shape, or add your own!</h2>
+            <select id="dropdown1">
+                <option value="Snowflake">Snowflake</option>
+                <option value="Tree">Tree</option>
+                <option value="Ornament">Ornament</option>
+                <option value="CandyCane">Candy Cane</option>
+                <option value="Wreath">Wreath</option>
+                <option value="SantaClaus">Santa Claus</option>
+                <option value="Mistletoe">Mistletoe</option>
+                <option value="SnowGlobe">Snow Globe</option>
+                <option value="Candle">Candle</option>
+                <option value="Nutcracker">Nutcracker</option>
+                <option value="Stocking">Stocking</option>
+                <option value="other">Other</option>
+            </select>
+
+            <div id="otherInput1" class="hidden">
+                <p>Enter a Shape that's not listed:</p>
+                <input type="text" id="otherText1" placeholder="Type here">
+            </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div id="section2" class="hidden">
+            <h2>Big or Small?</h2>
+            <select id="dropdown2">
+                <option value="Big">Big</option>
+                <option value="Small">Small</option>
+            </select>
+        </div>
+
+        <!-- Section 3 -->
+        <div id="section3" class="hidden">
+            <h2>Light or Heavy?</h2>
+            <select id="dropdown3">
+                <option value="Light">Lightweight</option>
+                <option value="Heavy">Heavyweight</option>
+            </select>
+        </div>
+
+        <!-- Section 4 -->
+        <div id="section4" class="hidden">
+            <h2>M or S?</h2>
+            <select id="dropdown4">
+                <option value="M">M</option>
+                <option value="S">S</option>
+            </select>
+        </div>
+
+        <!-- Section 5 -->
+        <div id="section5" class="hidden">
+            <h2>Paint, Stain, or Plain?</h2>
+            <select id="dropdown7">
+                <option value="Paint">Paint</option>
+                <option value="Plain">Plain</option>
+                <option value="Stain" id="stainOption">Stain</option>
+            </select>
+        </div>
+
+        <!-- Section 6 -->
+        <div id="section6" class="hidden">
+            <h2>Choose Color</h2>
+            <select id="colorDropdown">
+                <option value="Warm">Warm</option>
+                <option value="Soft">Soft</option>
+                <option value="Dull">Dull</option>
+                <option value="Bright">Bright</option>
+                <option value="other">Other</option>
+            </select>
+
+            <div id="otherColorInput" class="hidden">
+                <p>Enter a color that's not listed:</p>
+                <input type="text" id="otherColorText" placeholder="Type here">
+            </div>
+        </div>
+
+        <!-- Section 7 -->
+        <div id="section7" class="hidden">
+            <h2>Round or Flat?</h2>
+            <select id="dropdown6">
+                <option value="Round">Round</option>
+                <option value="Flat">Flat</option>
+            </select>
+        </div>
+
+        <button onclick="showLastSection()">Previous</button>
+        <button onclick="showNextSection()">Next</button>
+    </div>
+
+    <script>
+        var currentSection = 1;
+        var colorSection = true;
+
+        document.getElementById('dropdown1').addEventListener("change", onclickk);
+        document.getElementById('dropdown3').addEventListener("change", onLightOrHeavyChange);
+        document.getElementById('dropdown7').addEventListener("change", onPaintOrStainChange);
+        document.getElementById('colorDropdown').addEventListener("change", onColorChange);
+
+        function showLastSection() {
+            document.getElementById('section' + currentSection).classList.add('hidden');
+
+            // Move to the next section
+            currentSection--;
+
+            if (currentSection == 6 && colorSection == false) {
+                currentSection--;
+            }
+
+            // If all sections are displayed, go to page3.html
+            if (currentSection <= 1) {
+                window.location.href = 'index.html'; // or wherever you want to go
+                return;
+            }
+
+            // Show the next section
+            document.getElementById('section' + currentSection).classList.remove('hidden');
+
+            saveChoices();
+        }
+
+        function showNextSection() {
+            // Hide the current section
+            document.getElementById('section' + currentSection).classList.add('hidden');
+
+            // Move to the next section
+            currentSection++;
+            if (currentSection == 6 && colorSection == false) {
+                currentSection++;
+            }
+
+            // If all sections are displayed, go to page3.html
+            if (currentSection > 7) {
+                window.location.href = 'page3.html';
+                return;
+            }
+
+            // Show the next section
+            document.getElementById('section' + currentSection).classList.remove('hidden');
+
+            saveChoices();
+        }
+
+        function onclickk() {
+            console.log(this.value);
+            var otherInput = document.getElementById('otherInput1');
+            otherInput.style.display = this.value === 'other' ? 'block' : 'none';
+        }
+
+        function onLightOrHeavyChange() {
+            var dropdown3 = document.getElementById('dropdown3');
+            var dropdown7 = document.getElementById('dropdown7');
+            var stainOption = document.getElementById('stainOption');
+
+            if (dropdown3.value === 'Light') {
+                // If Light is selected, show section7
+                stainOption.style.display = 'block';
+            } else {
+                // If Heavy is selected, hide section7 and the Stain option
+                stainOption.style.display = 'none';
+            }
+        }
+
+        function onPaintOrStainChange() {
+            var dropdown7 = document.getElementById('dropdown7');
+            var section6 = document.getElementById('section6');
+            var stainOption = document.getElementById('stainOption');
+
+            if (dropdown7.value === 'Stain' || dropdown7.value === 'Plain') {
+                colorSection = false;
+            } else {
+                colorSection = true;
+            }
+        }
+
+        function onColorChange() {
+            var colorDropdown = document.getElementById('colorDropdown');
+            var otherColorInput = document.getElementById('otherColorInput');
+
+            // Show or hide the "Other" input based on color dropdown selection
+            otherColorInput.style.display = colorDropdown.value === 'other' ? 'block' : 'none';
+        }
+
+        function saveChoices() {
+            var choice1 = document.getElementById('dropdown1').value === "other" ?
+                document.getElementById('otherText1').value :
+                document.getElementById('dropdown1').value;
+            var choice2 = document.getElementById('dropdown2').value;
+            var choice3 = document.getElementById('dropdown3').value;
+            var choice4 = document.getElementById('dropdown4').value;
+            var choice5 = document.getElementById('colorDropdown').value;
+            var choice6 = document.getElementById('dropdown6').value;
+            var choice7 = document.getElementById('dropdown7').value;
+
+            localStorage.setItem('choice1', choice1);
+            localStorage.setItem('choice2', choice2);
+            localStorage.setItem('choice3', choice3);
+            localStorage.setItem('choice4', choice4);
+            localStorage.setItem('choice5', choice5);
+            localStorage.setItem('choice6', choice6);
+            localStorage.setItem('choice7', choice7);
+        }
+    </script>
+</body>
+
+</html>

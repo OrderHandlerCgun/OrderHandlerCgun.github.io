@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Your Order</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: black;
+            color: white;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background-color: #404040;
+            /* Gray color */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1,
+        p,
+        span {
+            color: white;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        span {
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #007BFF;
+            /* Blue color for the button */
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            pointer-events: all;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Order Submission!</h1>
+        <p>Review your choices:</p>
+        <!-- Display the choices retrieved from local storage -->
+        <p><span>Name:</span> <span id="name"></span></p>
+        <p><span>Shape:</span> <span id="displayChoice1"></span></p>
+        <p><span>Size:</span> <span id="displayChoice2"></span></p>
+        <p><span>Weight:</span> <span id="displayChoice3"></span></p>
+        <p><span>M/S:</span> <span id="displayChoice4"></span></p>
+        <p><span>Color Coating:</span> <span id="displayChoice7"></span></p>
+        <p><span>Color Choice (if applicable):</span> <span id="displayChoice5"></span></p>
+        <p><span>Dimension:</span> <span id="displayChoice6"></span></p>
+        <button onclick="submitChoices()" id="submisison">Submit</button>
+        <p id="url"></p>
+    </div>
+
+    <script>
+        // Retrieve choices from local storage and display them
+        document.getElementById('name').innerText = localStorage.getItem('name');
+        document.getElementById('displayChoice1').innerText = localStorage.getItem('choice1');
+        document.getElementById('displayChoice2').innerText = localStorage.getItem('choice2');
+        document.getElementById('displayChoice3').innerText = localStorage.getItem('choice3');
+        document.getElementById('displayChoice4').innerText = localStorage.getItem('choice4');
+        document.getElementById('displayChoice5').innerText = localStorage.getItem('choice5');
+        document.getElementById('displayChoice6').innerText = localStorage.getItem('choice6');
+        document.getElementById('displayChoice7').innerText = localStorage.getItem('choice7');
+
+        function submitChoices() {
+            // Retrieve choices from local storage
+            var choice1 = localStorage.getItem('choice1');
+            var choice2 = localStorage.getItem('choice2');
+            var choice3 = localStorage.getItem('choice3');
+            var choice4 = localStorage.getItem('choice4');
+            var choice5 = localStorage.getItem('choice5');
+            var choice6 = localStorage.getItem('choice6');
+            var choice7 = localStorage.getItem('choice7');
+            var sessionID = localStorage.getItem('OrderKey');
+            var name = localStorage.getItem('name');
+
+
+            // Construct the URL with appended tags
+            var url = "https://script.google.com/macros/s/AKfycbxkWJaPR1XKghycDNWMwVUUyxcbDeJgjIhIeJUR9TwwbGOKR_ak9QHKpf6NpnlyZqre/exec";
+            url += "?name=" + encodeURIComponent(name);
+            url += "&shape=" + encodeURIComponent(choice1);
+            url += "&size=" + encodeURIComponent(choice2);
+            url += "&weight=" + encodeURIComponent(choice3);
+            url += "&ms=" + encodeURIComponent(choice4);
+            url += "&coat=" + encodeURIComponent(choice7);
+            url += "&choice=" + encodeURIComponent(choice5);
+            url += "&dimension=" + encodeURIComponent(choice6);
+            url += "&orderid=" + encodeURIComponent(sessionID);
+
+            document.getElementById('url').innerText = "Order Submission Received!";
+
+            // Execute the URL
+            window.open(url, "_blank");
+
+
+        }
+    </script>
+</body>
+
+</html>
