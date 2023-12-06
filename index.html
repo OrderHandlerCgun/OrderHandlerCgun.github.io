@@ -84,7 +84,7 @@
 
 <body>
     <div class="container" id="SUBMIT">
-        <h1>Welcome to Your Website</h1>
+        <h1>Welcome to Your Custom Gift Maker!</h1>
         <p>Please enter your provided code to get started:</p>
         <input type="text" id="codeInput" placeholder="Enter code">
         <button onclick="checkCode()" class="buttonSub">Get Started</button>
@@ -115,7 +115,8 @@
             'gracexgay': 'Ms. Grace Gay',
             'hearmeoutlmao': 'Mr. Michael Cragun',
             'mygoodbro': 'Mr. Marshall Charley',
-            'serverisgood': 'Server Tester Alv'
+            'alvaysbreakin': 'Alviss',
+            'hasgonegood': 'Hassaani'
         };
 
         function checkCode() {
@@ -184,9 +185,13 @@
 
             // Display each order in a row
             orders.forEach((order) => {
-                const orderRow = document.createElement('div');
-                orderRow.classList.add('order-row');
-                orderRow.innerHTML = `
+                if (order.dimension === "Canceled") {
+
+                }
+                else {
+                    const orderRow = document.createElement('div');
+                    orderRow.classList.add('order-row');
+                    orderRow.innerHTML = `
                         <p>Order #: ${order.orderNumber};
                         Shape: ${order.shape},
                         Size: ${order.size},
@@ -194,14 +199,23 @@
                         Status: ${order.status}</p>
                    <button onclick="clearOrder('${order.orderNumber}')" class="${order.dimension === "Canceled" ? "buttonCannot" : "buttonCan"}">Cancel</button>
                 `;
-                ordersContainer.appendChild(orderRow);
+                    ordersContainer.appendChild(orderRow);
+                }
             });
         }
 
         function clearOrder(orderId) {
 
             var urltoOpen = 'https://script.google.com/macros/s/AKfycbyVmJyW3tMyj1uPyJ_mF0AZrB50YkRqs-kAWb7uESSEI6kug8IkTG8o4Oh6cKY13UKC/exec?id=' + orderId;
-            window.open(urltoOpen, '_blank');
+            // window.open(urltoOpen, '_blank');
+            fetch(urltoOpen)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                })
+                .catch((error) => {
+                    console.error('Error fetching data:', error);
+                });
             setTimeout(function () {
                 googleRetrieve();
             }, 3000);

@@ -89,6 +89,7 @@
 
             <div id="otherInput1" class="hidden">
                 <p>Enter a Shape that's not listed:</p>
+                <p id="error"></p>
                 <input type="text" id="otherText1" placeholder="Type here">
             </div>
         </div>
@@ -122,7 +123,7 @@
 
         <!-- Section 5 -->
         <div id="section5" class="hidden">
-            <h2>Paint, Stain, or Plain?</h2>
+            <h2 id="paintstain">Paint, Stain, or Plain?</h2>
             <select id="dropdown7">
                 <option value="Paint">Paint</option>
                 <option value="Plain">Plain</option>
@@ -163,35 +164,40 @@
     <script>
         var currentSection = 1;
         var colorSection = true;
+        var canMoveOn = true;
 
         document.getElementById('dropdown1').addEventListener("change", onclickk);
         document.getElementById('dropdown3').addEventListener("change", onLightOrHeavyChange);
         document.getElementById('dropdown7').addEventListener("change", onPaintOrStainChange);
         document.getElementById('colorDropdown').addEventListener("change", onColorChange);
+        document.getElementById('otherText1').addEventListener("change", onclickk);
 
         function showLastSection() {
+            if (!canMoveOn)
+                return;
+
             document.getElementById('section' + currentSection).classList.add('hidden');
 
-            // Move to the next section
             currentSection--;
 
             if (currentSection == 6 && colorSection == false) {
                 currentSection--;
             }
 
-            // If all sections are displayed, go to page3.html
             if (currentSection <= 1) {
-                window.location.href = 'index.html'; // or wherever you want to go
+                window.location.href = 'index.html';
                 return;
             }
 
-            // Show the next section
             document.getElementById('section' + currentSection).classList.remove('hidden');
 
             saveChoices();
         }
 
         function showNextSection() {
+            if (!canMoveOn)
+                return;
+
             // Hide the current section
             document.getElementById('section' + currentSection).classList.add('hidden');
 
@@ -214,22 +220,48 @@
         }
 
         function onclickk() {
-            console.log(this.value);
+            var dropdown1 = document.getElementById('dropdown1');
             var otherInput = document.getElementById('otherInput1');
-            otherInput.style.display = this.value === 'other' ? 'block' : 'none';
+            var otherText = document.getElementById('otherText1');
+            var errorMessage = document.getElementById('error');
+
+            // Reset error message
+            errorMessage.innerHTML = '';
+
+            if (dropdown1.value === 'other') {
+
+                otherInput.style.display = dropdown1.value === 'other' ? 'block' : 'none';
+
+                var inputValue = otherText.value;
+                var validInput = /^[a-zA-Z0-9.]+$/.test(inputValue);
+
+                if (!validInput) {
+                    errorMessage.innerHTML = 'Invalid characters detected. Please use only numbers, letters, or a period.';
+                    canMoveOn = false;
+                    return;
+                }
+                else {
+                    canMoveOn = true;
+                }
+            }
+
+
         }
+
 
         function onLightOrHeavyChange() {
             var dropdown3 = document.getElementById('dropdown3');
             var dropdown7 = document.getElementById('dropdown7');
             var stainOption = document.getElementById('stainOption');
+            var header = document.getElementById('paintstain');
 
             if (dropdown3.value === 'Light') {
-                // If Light is selected, show section7
                 stainOption.style.display = 'block';
+                header.innerHTML = 'Paint, Stain, or Plain?';
+
             } else {
-                // If Heavy is selected, hide section7 and the Stain option
                 stainOption.style.display = 'none';
+                header.innerHTML = 'Paint or Plain?';
             }
         }
 
