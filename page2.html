@@ -105,7 +105,7 @@
 
         <!-- Section 3 -->
         <div id="section3" class="hidden">
-            <h2>Light or Heavy?</h2>
+            <h2>Material Type?</h2>
             <select id="dropdown3">
                 <option value="Light">Lightweight</option>
                 <option value="Heavy">Heavyweight</option>
@@ -114,7 +114,7 @@
 
         <!-- Section 4 -->
         <div id="section4" class="hidden">
-            <h2>M or S?</h2>
+            <h2>M or S? (Vague for a reason!)</h2>
             <select id="dropdown4">
                 <option value="M">M</option>
                 <option value="S">S</option>
@@ -150,7 +150,7 @@
 
         <!-- Section 7 -->
         <div id="section7" class="hidden">
-            <h2>Round or Flat?</h2>
+            <h2>Dimensionally Round or Flat?</h2>
             <select id="dropdown6">
                 <option value="Round">Round</option>
                 <option value="Flat">Flat</option>
@@ -184,7 +184,7 @@
                 currentSection--;
             }
 
-            if (currentSection <= 1) {
+            if (currentSection < 1) {
                 window.location.href = 'index.html';
                 return;
             }

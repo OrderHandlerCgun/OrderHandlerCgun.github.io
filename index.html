@@ -115,9 +115,12 @@
             'gracexgay': 'Ms. Grace Gay',
             'hearmeoutlmao': 'Mr. Michael Cragun',
             'mygoodbro': 'Mr. Marshall Charley',
+            'theagman': 'Mr. Jake Simpson',
             'alvaysbreakin': 'Alviss',
             'hasgonegood': 'Hassaani'
         };
+
+        document.getElementById('codeinput').value = localStorage.getItem('name');
 
         function checkCode() {
             var enteredCode = document.getElementById('codeInput').value;
@@ -218,6 +221,7 @@
                 });
             setTimeout(function () {
                 googleRetrieve();
+                alert('Order Canceled!');
             }, 3000);
 
         }
